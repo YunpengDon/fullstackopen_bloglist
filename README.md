@@ -1,2 +1,2 @@
 # fullstackopen_bloglist
-Exercises in fullstackopen.com part4
+Exercises in fullstackopen.com part 4
