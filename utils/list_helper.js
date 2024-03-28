@@ -45,7 +45,7 @@ const mostBlogs = (blogs) => {
     
     // count the blogs by each author
     authorList = _.countBy(blogs, 'author')
-    
+
     // returns the author who has the largest amount of blogs.
     let mostBlogNumber = 0
     let mostBlogAuthor = null
@@ -60,10 +60,36 @@ const mostBlogs = (blogs) => {
         blogs: mostBlogNumber
     }
 }
+
+const mostLikes = (blogs) => {
+    // empty list returns null
+    if (blogs.length == 0){
+        return blogs
+    } 
+
+    // group blogs by author
+    authorList = _.groupBy(blogs, 'author')
+    let mostLikeAuthorNumber = 0
+    let mostLikeAuthor = null
+    for (const author in authorList) {
+        sumOfLikes = totalLikes(authorList[author])
+        if (sumOfLikes > mostLikeAuthorNumber) {
+            mostLikeAuthorNumber = sumOfLikes
+            mostLikeAuthor = author
+        }
+    }
+    return {
+        author: mostLikeAuthor,
+        likes: mostLikeAuthorNumber
+      }
+    // returns the author, whose blog posts have the largest amount of likes. 
+    
+}
   
 module.exports = {
     dummy,
     totalLikes,
     favoriteBlog,
-    mostBlogs
+    mostBlogs,
+    mostLikes
 }
