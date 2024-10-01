@@ -6,7 +6,6 @@ const assert = require('assert')
 const helper = require('./test_helper')
 const Blog = require('../models/blog')
 const app = require('../app')
-const blog = require('../models/blog')
 
 const api  = supertest(app)
 
@@ -90,6 +89,18 @@ test('note without url is not added', async () => {
     const blogsAtEnd = await helper.blogsInDb()
     assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
 })
+
+test('a blog can be deleted', async () => {
+    const blogAtStart = await helper.blogsInDb()
+    const blogToDelete = blogAtStart[0]
+
+    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
+    const blogsAtEnd = await helper.blogsInDb()
+    const ids = blogsAtEnd.map(r => r.id)
+    assert(!ids.includes(blogToDelete.id))
+    assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length - 1 )
+})
+
 
 after(async () => {
     await mongoose.connection.close()
