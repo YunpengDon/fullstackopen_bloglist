@@ -51,6 +51,20 @@ test('a valid note can be added', async () => {
     assert(titles.includes('Go To Statement Considered Harmful'))
 })
 
+test('note without likes can be added', async () => {
+    const newBlog = {
+        title: 'Go To Statement Considered Harmful New',
+        author: 'New author',
+        url: 'https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf',
+    }
+    await api.post('/api/blogs').send(newBlog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+    
+    const blogsAtEnd = await helper.blogsInDb()
+    assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length+1)
+})
+
 after(async () => {
     await mongoose.connection.close()
     console.log('Database connection closed')
