@@ -34,7 +34,7 @@ test('the blog list application returns the correct amount of blog posts', async
     assert.strictEqual(response.body.length, helper.initialBlogs.length)
 })
 
-test('a valid note can be added', async () => {
+test('a valid blog can be added', async () => {
     const newBlog = {
         title: 'Go To Statement Considered Harmful',
         author: 'Edsger W. Dijkstra',
@@ -51,7 +51,7 @@ test('a valid note can be added', async () => {
     assert(titles.includes('Go To Statement Considered Harmful'))
 })
 
-test('note without likes can be added', async () => {
+test('blog without likes can be added', async () => {
     const newBlog = {
         title: 'Go To Statement Considered Harmful New',
         author: 'New author',
@@ -63,6 +63,32 @@ test('note without likes can be added', async () => {
     
     const blogsAtEnd = await helper.blogsInDb()
     assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length+1)
+})
+
+test('note without title is not added', async () => {
+    const newBlog = {
+        author: 'New author',
+        url: 'https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf',
+    }
+
+    await api.post('/api/blogs').send(newBlog)
+        .expect(400)
+    
+    const blogsAtEnd = await helper.blogsInDb()
+    assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
+})
+
+test('note without url is not added', async () => {
+    const newBlog = {
+        title: 'Empty title',
+        author: 'New author',
+    }
+
+    await api.post('/api/blogs').send(newBlog)
+        .expect(400)
+    
+    const blogsAtEnd = await helper.blogsInDb()
+    assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
 })
 
 after(async () => {
