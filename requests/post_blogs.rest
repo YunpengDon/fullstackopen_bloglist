@@ -54,3 +54,8 @@ Content-Type:  application/json
     "likes": 12,
     "userId": "66fe275ecd2e6a4eb795fff6"
 }
+
+### 
+DELETE http://localhost:3003/api/blogs/66fe2dfb9d7607b1a022ed92
+Content-Type:  application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI2NmZkM2Y5NTAzMjU5ZTdlMTEzODE5MWMiLCJpYXQiOjE3Mjc5NDExMDV9.ohki760UYU5QucoTUQqsJzTbXKEusf4Eb6da01EseI
