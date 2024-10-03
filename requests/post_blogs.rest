@@ -9,10 +9,10 @@ Content-Type:  application/json
 ###
 POST http://localhost:3003/api/blogs
 Content-Type:  application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI2NmZkM2Y5NTAzMjU5ZTdlMTEzODE5MWMiLCJpYXQiOjE3Mjc5NDExMDV9.ohki760UYU5QucoTUQqsJzTbXKEusf4Eb69da01EseI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI2NmZkM2Y5NTAzMjU5ZTdlMTEzODE5MWMiLCJpYXQiOjE3Mjc5NDg0OTYsImV4cCI6MTcyNzk1MjA5Nn0.mQeeOZ6_1BFu3Sh2AHmTXMXvlP7WpkVzff-By7p9dEQ
 
 {
-  "title": "Hello From Token",
+  "title": "Hello From Token2",
   "author": "Shelbean",
   "url": "Hello",
   "likes": 100,
@@ -56,6 +56,6 @@ Content-Type:  application/json
 }
 
 ### 
-DELETE http://localhost:3003/api/blogs/66fe2dfb9d7607b1a022ed92
+DELETE http://localhost:3003/api/blogs/66fe6a07eaddbf5139a25ee2
 Content-Type:  application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI2NmZkM2Y5NTAzMjU5ZTdlMTEzODE5MWMiLCJpYXQiOjE3Mjc5NDExMDV9.ohki760UYU5QucoTUQqsJzTbXKEusf4Eb6da01EseI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI2NmZkM2Y5NTAzMjU5ZTdlMTEzODE5MWMiLCJpYXQiOjE3Mjc5NDg0OTYsImV4cCI6MTcyNzk1MjA5Nn0.mQeeOZ6_1BFu3Sh2AHmTXMXvlP7WpkVzff-By7p9dEQ

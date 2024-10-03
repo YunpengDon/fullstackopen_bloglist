@@ -28,18 +28,18 @@ blogRouter.get('/:id', async (request, response, next) => {
 
 blogRouter.post('/', async(request, response) => {
   const {userId, ...blogInfo} = request.body
-  // const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
-  const decodedToken = jwt.verify(request.token, process.env.SECRET)
-  if (!decodedToken.id){
+  // get user from request object
+  const userid = request.user
+  if (!userid){
     return response.status(401).json({ error: 'token invalid' })
   }
 
-  const user = await User.findById(decodedToken.id)
+  const user = await User.findById(userid)
 
   const blog = new Blog({
     ...blogInfo,
     likes: blogInfo.likes || 0,
-    user: userId
+    user: user.id
   })
 
   const savedBlog = await blog.save()
@@ -51,14 +51,14 @@ blogRouter.post('/', async(request, response) => {
 
 blogRouter.delete("/:id", async (request, response, next) => {
   // If deleting a blog is attempted without a token or by an invalid user, the operation should return a suitable status code.
-  if (!request.token){
+  const userid = request.user
+  if (!userid){
     return response.status(401).json({ error: 'token invalid' })
   }
-
-  //  a blog can be deleted only by the user who added it
-  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  
   const blog = await Blog.findById(request.params.id)
-  if (blog.user.toString() !== decodedToken.id.toString()) {
+  //  a blog can be deleted only by the user who added it
+  if (blog.user.toString() !== userid.toString()) {
     return response.status(401).json({ error: 'blog can be deleted only by the user who added it.' })
   }
 
