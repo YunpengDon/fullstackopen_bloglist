@@ -1,4 +1,4 @@
-const {test, after, beforeEach, describe} = require('node:test')
+const {test, after, beforeEach, before, describe} = require('node:test')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const assert = require('assert')
@@ -11,14 +11,21 @@ const app = require('../app')
 
 const api  = supertest(app)
 
+let authHeader
+
+before(async () => {
+    const response = await api.post('/api/login').send(helper.initialUser)
+    const token = response.body.token
+    authHeader = `Bearer ${token}`
+})
+
 describe('Tests on Blog operations', ()=>{
 beforeEach(async () => {
     await Blog.deleteMany({})
     console.log('cleared');
-    // let blogObject = new Blog(helper.initialBlogs[0])
-    // await blogObject.save()
-    
-    const blogObjects = helper.initialBlogs.map(blog=> new Blog(blog))
+
+    const blogs = helper.initialBlogs.map(blog => ({...blog, user: helper.initialUser.id}))
+    const blogObjects = blogs.map(blog=> new Blog(blog))
     const promiseArray = blogObjects.map(note => note.save())
     await Promise.all(promiseArray)
     console.log('done');
@@ -43,7 +50,7 @@ test('a valid blog can be added', async () => {
         url: 'https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf',
         likes: 5,
       }
-    await api.post('/api/blogs').send(newBlog)
+    await api.post('/api/blogs').set('Authorization', authHeader).send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
     
@@ -59,7 +66,7 @@ test('blog without likes can be added', async () => {
         author: 'New author',
         url: 'https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf',
     }
-    await api.post('/api/blogs').send(newBlog)
+    await api.post('/api/blogs').set('Authorization', authHeader).send(newBlog)
         .expect(201)
         .expect('Content-Type', /application\/json/)
     
@@ -73,7 +80,7 @@ test('note without title is not added', async () => {
         url: 'https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf',
     }
 
-    await api.post('/api/blogs').send(newBlog)
+    await api.post('/api/blogs').set('Authorization', authHeader).send(newBlog)
         .expect(400)
     
     const blogsAtEnd = await helper.blogsInDb()
@@ -86,7 +93,7 @@ test('note without url is not added', async () => {
         author: 'New author',
     }
 
-    await api.post('/api/blogs').send(newBlog)
+    await api.post('/api/blogs').set('Authorization', authHeader).send(newBlog)
         .expect(400)
     
     const blogsAtEnd = await helper.blogsInDb()
@@ -97,7 +104,7 @@ test('a blog can be deleted', async () => {
     const blogAtStart = await helper.blogsInDb()
     const blogToDelete = blogAtStart[0]
 
-    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
+    await api.delete(`/api/blogs/${blogToDelete.id}`).set('Authorization', authHeader).expect(204)
     const blogsAtEnd = await helper.blogsInDb()
     const ids = blogsAtEnd.map(r => r.id)
     assert(!ids.includes(blogToDelete.id))

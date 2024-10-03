@@ -27,7 +27,7 @@ blogRouter.get('/:id', async (request, response, next) => {
 })
 
 blogRouter.post('/', async(request, response) => {
-  const {userId, ...blogInfo} = request.body
+  const blogInfo = request.body
   // get user from request object
   const userid = request.user
   if (!userid){

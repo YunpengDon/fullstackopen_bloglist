@@ -3,6 +3,7 @@ Content-Type:  application/json
 
 {
 "username":"mluukkai",
+"name": "Superuser",
 "password":"salainen"
 }
 
@@ -16,7 +17,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sd
   "author": "Shelbean",
   "url": "Hello",
   "likes": 100,
-  "userId": "66fd3f9503259e7e1138191c"
 }
 
 ###

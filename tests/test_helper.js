@@ -2,6 +2,13 @@ const { model } = require("mongoose")
 const Blog = require('../models/blog')
 const User = require('../models/users')
 
+const initialUser = 
+{"id":"66fd3fd703259e7e1138191e",
+"username":"hellas",
+"name":"Arto Hellas",
+"password":"Aa123456",
+}
+
 const initialBlogs = [
     {
       _id: "5a422a851b54a676234d17f7",
@@ -65,4 +72,4 @@ const usersInDb = async () => {
 
 
 
-module.exports = {initialBlogs, blogsInDb, usersInDb}
+module.exports = {initialUser, initialBlogs, blogsInDb, usersInDb}
