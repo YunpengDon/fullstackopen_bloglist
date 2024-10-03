@@ -1,0 +1,46 @@
+POST http://localhost:3003/api/blogs
+Content-Type:  application/json
+
+{
+  "title": "Hello",
+  "author": "Shelbean",
+  "url": "Hello",
+  "likes": 100,
+  "userId": "66fd3f9503259e7e1138191c"
+}
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type:  application/json
+
+{
+    "title": "React patterns",
+    "author": "Michael Chan",
+    "url": "https://reactpatterns.com/",
+    "likes": 7,
+    "userId": "66fd3fd703259e7e1138191e"
+}
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type:  application/json
+
+{
+    "title": "Go To Statement Considered Harmful",
+    "author": "Edsger W. Dijkstra",
+    "url": "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
+    "likes": 5,
+    "userId": "66fd3fd703259e7e1138191e"
+}
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type:  application/json
+
+{
+    "title": "Canonical string reduction",
+    "author": "Edsger W. Dijkstra",
+    "url": "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
+    "likes": 12,
+    "userId": "66fe275ecd2e6a4eb795fff6"
+}
