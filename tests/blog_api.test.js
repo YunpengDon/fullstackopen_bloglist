@@ -1,14 +1,17 @@
-const {test, after, beforeEach} = require('node:test')
+const {test, after, beforeEach, describe} = require('node:test')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const assert = require('assert')
 
 const helper = require('./test_helper')
 const Blog = require('../models/blog')
+const User = require('../models/users')
+
 const app = require('../app')
 
 const api  = supertest(app)
 
+describe('Tests on Blog operations', ()=>{
 beforeEach(async () => {
     await Blog.deleteMany({})
     console.log('cleared');
@@ -108,6 +111,64 @@ test('the information of an individual blog post can be updated', async () => {
     await api.put(`/api/blogs/${blogToUpdate.id}`).send(blogToUpdate).expect(200)
     const blogsAtEnd = await api.get(`/api/blogs/${blogToUpdate.id}`)
     assert.strictEqual(blogsAtEnd.body.likes, 100)
+})
+})
+
+describe('Invalied user can not be created', () => {
+    test('username must be given', async () => {
+        const usersAtStart = await helper.usersInDb()
+        const newUser = {
+            name: 'Matti Luukkainen',
+            password: 'salainen',
+        }
+        const result = await api
+          .post('/api/users')
+          .send(newUser)
+          .expect(400)
+          .expect('Content-Type', /application\/json/)
+        
+        const usersAtEnd = await helper.usersInDb()
+        assert(result.body.error.includes('Username and password should not be empty'))
+    
+        assert.strictEqual(usersAtEnd.length, usersAtStart.length)
+    })
+
+    test('password must be given', async () => {
+        const usersAtStart = await helper.usersInDb()
+        const newUser = {
+            username: 'root',
+            name: 'Matti Luukkainen',
+        }
+        const result = await api
+          .post('/api/users')
+          .send(newUser)
+          .expect(400)
+          .expect('Content-Type', /application\/json/)
+        
+        const usersAtEnd = await helper.usersInDb()
+        assert(result.body.error.includes('Username and password should not be empty'))
+    
+        assert.strictEqual(usersAtEnd.length, usersAtStart.length)
+    })
+
+    test('password must be at least 3 characters long', async () => {
+        const usersAtStart = await helper.usersInDb()
+        const newUser = {
+            username: 'root',
+            name: 'Superuser',
+            password: 'sa',
+        }
+        const result = await api
+          .post('/api/users')
+          .send(newUser)
+          .expect(400)
+          .expect('Content-Type', /application\/json/)
+        
+        const usersAtEnd = await helper.usersInDb()
+        assert(result.body.error.includes('Password must be at least 3 characters long'))
+    
+        assert.strictEqual(usersAtEnd.length, usersAtStart.length)
+    })
 })
 
 after(async () => {
