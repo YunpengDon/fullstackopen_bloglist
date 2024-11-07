@@ -39,7 +39,8 @@ blogRouter.post('/', async(request, response) => {
   const blog = new Blog({
     ...blogInfo,
     likes: blogInfo.likes || 0,
-    user: user.id
+    user: user.id,
+    comments: []
   })
 
   const savedBlog = await blog.save()
@@ -69,7 +70,23 @@ blogRouter.delete("/:id", async (request, response, next) => {
 blogRouter.put("/:id", async (request, response, next) => {
   const blog = request.body
 
-  saveBlog = await Blog.findByIdAndUpdate(request.params.id, blog, {new: true})
+  const saveBlog = await Blog.findByIdAndUpdate(request.params.id, blog, {new: true})
+  response.status(200).json(saveBlog)
+})
+
+blogRouter.put("/:id/comments", async (request, response, next) => {
+
+  const saveBlog = await Blog.findByIdAndUpdate(
+    request.params.id,
+    {
+      $push: {
+        comments: {
+          body: request.body.comment,
+          date: new Date()
+        }
+      }
+    },
+    {new: true})
   response.status(200).json(saveBlog)
 })
 
